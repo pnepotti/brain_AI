@@ -14,7 +14,7 @@ async def upload_brain_mri(data: dict):
 async def delete_brain_mri(mri_id: int):
     return {"message": f"Brain MRI with id {mri_id} deleted"}
 
-@router.put("/brain-mri/{mri_id}")
+@router.patch("/brain-mri/{mri_id}")
 async def update_brain_mri(mri_id: int, data: dict):
     return {"message": f"Brain MRI with id {mri_id} updated", "data": data}
 
