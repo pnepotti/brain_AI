@@ -1,4 +1,4 @@
-from sqlañlchemy import Column, Integer, String, ForeignKey, DateTime, Boolean, Float, Text
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Boolean, Float, Text
 from sqlalchemy.orm import relationship
 from app.db.base_class import Base
 from sqlalchemy.sql import func
@@ -10,7 +10,8 @@ class Analysis(Base):
 
     image_path = Column(String, nullable=False)
     ai_prediction = Column(String, nullable=False)
-    ai_accuracy = Column(Float, nullable=False)  # 0.95
+    ai_accuracy = Column(Float, nullable=False)  
+    result_details = Column(String, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     is_verified = Column(Boolean, default=False)
@@ -19,10 +20,9 @@ class Analysis(Base):
 
     # --- FK ---
     
-    patient_id = Column(Integer, ForeignKey("patients.id"), nullable=False)
+    patient_id = Column(Integer, ForeignKey("patients.id"), nullable=True)
     patient = relationship("Patient", back_populates="analyses")
 
-    # B. Quién subió la imagen
     uploader_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     uploader = relationship("User", foreign_keys=[uploader_id], back_populates="uploaded_analyses")
 

@@ -3,13 +3,14 @@ from typing import Optional
 
 class PatientBase(BaseModel):
     identifier: str # DNI
-    age: int
+    full_name: Optional[str] = None
 
 class PatientCreate(PatientBase):
     pass
 
 class PatientUpdate(PatientBase):
-    age: Optional[int] = None
+    identifier: Optional[str] = None
+    full_name: Optional[str] = None
 
 class PatientResponse(PatientBase):
     id: int
