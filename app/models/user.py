@@ -4,7 +4,6 @@ from sqlalchemy.orm import relationship
 from app.models import analysis  
 import enum
 
-# Usamos Enum de Python para restringir los roles y evitar "magic strings"
 class UserRole(str, enum.Enum):
     ADMIN = "admin"
     DOCTOR = "doctor"

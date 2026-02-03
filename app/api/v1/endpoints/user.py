@@ -1,5 +1,8 @@
-from fastapi import APIRouter, status
+from fastapi import APIRouter, status, Depends, HTTPException
+from sqlalchemy.ext.asyncio import AsyncSession
 from app.schemas.user import UserResponse, UserUpdate, UserCreate, UserUpdateMe
+from app.api.deps import get_db
+from app.services.user_service import user_service
 
 router = APIRouter()
 
@@ -16,8 +19,11 @@ async def update_current_user(data: UserUpdateMe):
     return {"message": "Current user updated", "data": data}
 
 @router.post("/", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
-async def create_user(data: UserCreate):
-    return {"message": "User created", "data": data}
+async def create_user(data: UserCreate, db: AsyncSession = Depends(get_db)):
+    try:
+        return await user_service.create_user(db=db, user_in=data)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 @router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_user(user_id: int):
