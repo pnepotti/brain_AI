@@ -1,9 +1,10 @@
 # app/api/v1/endpoints/auth.py (actualizado)
 from fastapi import APIRouter, status, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.api.deps import get_db
+from app.api.deps import get_db, get_current_user
 from app.services.auth_service import auth_service
 from app.schemas.auth import LoginRequest, TokenResponse
+from app.models.user import User
 from app.core.exceptions import (
     InvalidCredentialsError,
     InactiveUserError,
@@ -44,14 +45,17 @@ async def login(
 
 
 @router.post("/logout", status_code=status.HTTP_200_OK)
-async def logout():
+async def logout(current_user: User = Depends(get_current_user)):
     """
     Endpoint para logout.
     
     En JWT stateless, el cliente elimina el token localmente.
     El backend solo confirma el logout.
+    
+    Args:
+        current_user: Usuario actual extraído del JWT
     """
-    result = await auth_service.logout(user_id=None)  # user_id vendría del JWT
+    result = await auth_service.logout(user_id=current_user.id)
     return result
 
 

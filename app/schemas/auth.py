@@ -35,4 +35,3 @@ class TokenResponse(BaseModel):
 class RefreshTokenRequest(BaseModel):
     """Esquema para refresh token request."""
     refresh_token: Optional[str] = None
-    # En mi caso, el refresh_token viene del JWT (via get_current_user)
