@@ -101,3 +101,10 @@ async def get_current_user(
             detail="Error validando token",
             headers={"WWW-Authenticate": "Bearer"},
         )
+
+def require_role(*allowed_roles):
+    async def role_checker(current_user: User = Depends(get_current_user)) -> User:
+        if current_user.role not in allowed_roles:
+            raise ForbiddenError(f"Requiere rol: {allowed_roles}")
+        return current_user
+    return role_checker

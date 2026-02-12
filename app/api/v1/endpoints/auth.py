@@ -62,7 +62,7 @@ async def logout(current_user: User = Depends(get_current_user)):
 @router.post("/refresh", response_model=TokenResponse, status_code=status.HTTP_200_OK)
 async def refresh_token(
     db: AsyncSession = Depends(get_db),
-    current_user_id: int = Depends(get_current_user)  # Necesitas implementar esto
+    current_user: User = Depends(get_current_user)  
 ):
     """
     Endpoint para refrescar el JWT token.
@@ -72,7 +72,7 @@ async def refresh_token(
     try:
         token = await auth_service.refresh_token(
             db=db,
-            user_id=current_user_id
+            user_id=current_user.id
         )
         return token
     except AppException as e:

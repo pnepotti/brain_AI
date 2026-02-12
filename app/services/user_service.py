@@ -33,5 +33,17 @@ class UserService:
         await db.commit()
         await db.refresh(db_user)
         return db_user
+    
+    async def update_user(self, user_id: int, user_in: UserCreate) -> User:
+        # Implementar lógica de actualización de usuario
+        pass
+
+    async def update_current_user(self, user_id: int, user_in: UserUpdateMe) -> User:
+        # Implementar lógica de actualización del propio usuario
+        pass
+
+    async def delete_user(self, user_id: int) -> None:
+        # Implementar lógica de eliminación de usuario
+        pass
 
 user_service = UserService()
