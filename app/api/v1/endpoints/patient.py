@@ -14,10 +14,10 @@ async def get_patient_info(current_user: UserResponse = Depends(require_role([Us
 async def create_patient(data: PatientCreate, current_user: UserResponse = Depends(require_role([UserRole.ADMIN, UserRole.DOCTOR]))):
     return {"message": "Patient created", "data": data}
 
-@router.delete("/{patient_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_patient(patient_id: int, current_user: UserResponse = Depends(require_role([UserRole.ADMIN, UserRole.DOCTOR]))):
+@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_patient(id: int, current_user: UserResponse = Depends(require_role([UserRole.ADMIN, UserRole.DOCTOR]))):
     pass
 
-@router.patch("/{patient_id}", response_model=PatientUpdate, status_code=status.HTTP_200_OK)
-async def update_patient(patient_id: int, data: PatientUpdate, current_user: UserResponse = Depends(require_role([UserRole.ADMIN, UserRole.DOCTOR]))):
-    return {"message": f"Patient with id {patient_id} updated", "data": data}   
+@router.patch("/{id}", response_model=PatientUpdate, status_code=status.HTTP_200_OK)
+async def update_patient(id: int, data: PatientUpdate, current_user: UserResponse = Depends(require_role([UserRole.ADMIN, UserRole.DOCTOR]))):
+    return {"message": f"Patient with id {id} updated", "data": data}   

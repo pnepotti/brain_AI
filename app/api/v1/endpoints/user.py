@@ -26,10 +26,10 @@ async def create_user(data: UserCreate, db: AsyncSession = Depends(get_db), curr
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_user(user_id: int, current_user: UserResponse = Depends(require_role(UserRole.ADMIN))):
-    return await user_service.delete_user(user_id=user_id)
+@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_user(id: int, current_user: UserResponse = Depends(require_role(UserRole.ADMIN))):
+    return await user_service.delete_user(user_id=id)
 
-@router.patch("/{user_id}", response_model=UserResponse, status_code=status.HTTP_200_OK)
-async def update_user(user_id: int, data: UserUpdate, current_user: UserResponse = Depends(require_role(UserRole.ADMIN))):
-    return await user_service.update_user(user_id=user_id, user_in=data)
+@router.patch("/{id}", response_model=UserResponse, status_code=status.HTTP_200_OK)
+async def update_user(id: int, data: UserUpdate, current_user: UserResponse = Depends(require_role(UserRole.ADMIN))):
+    return await user_service.update_user(user_id=id, user_in=data)

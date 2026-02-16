@@ -3,7 +3,7 @@ from typing import Optional
 from app.schemas.analysis import AnalysisCreate, AnalysisUpdate
 from app.api.deps import get_db, get_current_user
 from app.models.user import UserRole
-from app.api.deps import requires_role
+from app.api.deps import require_role
 from app.models.user import User
 
 
@@ -17,7 +17,7 @@ async def get_analysis_info():
 async def create_analysis(
     patient_id: Optional[int] = Form(None),
     file: UploadFile = File(...),
-    current_user: User = Depends(requires_role(UserRole.ADMIN, UserRole.DOCTOR))
+    current_user: User = Depends(require_role(UserRole.ADMIN, UserRole.DOCTOR))
 ):
     # Validar que es una imagen
     if not file.content_type.startswith("image/"):
@@ -29,10 +29,10 @@ async def create_analysis(
         "patient_id": patient_id # Puede ser None
     }
 
-@router.delete("/{analysis_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_analysis(analysis_id: int, current_user: User = Depends(requires_role(UserRole.ADMIN))):
+@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_analysis(id: int, current_user: User = Depends(require_role(UserRole.ADMIN))):
     pass
 
-@router.patch("/{analysis_id}", response_model=AnalysisUpdate, status_code=status.HTTP_200_OK)
-async def update_analysis(analysis_id: int, data: AnalysisUpdate, current_user: User = Depends(requires_role(UserRole.ADMIN, UserRole.DOCTOR))):
-    return {"message": f"Analysis with id {analysis_id} updated", "data": data}
+@router.patch("/{id}", response_model=AnalysisUpdate, status_code=status.HTTP_200_OK)
+async def update_analysis(id: int, data: AnalysisUpdate, current_user: User = Depends(require_role(UserRole.ADMIN, UserRole.DOCTOR))):
+    return {"message": f"Analysis with id {id} updated", "data": data}
