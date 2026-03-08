@@ -1,4 +1,4 @@
-FROM python:3.11-slim
+FROM python:3.12-slim
 
 WORKDIR /app
 
@@ -17,8 +17,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copiar aplicación
 COPY . .
 
+# Dar permisos de ejecución al script de entrada
+RUN chmod +x ./scripts/entrypoint.sh
+
 # Exponer puerto
 EXPOSE 8000
 
-# Comando por defecto (puede ser sobrescrito en docker-compose)
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Establecer el script como el punto de entrada
+ENTRYPOINT ["./scripts/entrypoint.sh"]

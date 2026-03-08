@@ -19,8 +19,8 @@ class LoginRequest(BaseModel):
 class TokenResponse(BaseModel):
     """Esquema para respuesta de token."""
     access_token: str
-    token_type: str  # siempre "bearer"
-    expires_in: int  # segundos hasta expiración
+    token_type: str  
+    expires_in: int  
     
     class Config:
         schema_extra = {

@@ -4,19 +4,17 @@ from datetime import datetime
 
 from .patient import PatientResponse 
 from .user import UserResponse
+from .prediction import PredictionResponse
 
 class AnalysisBase(BaseModel):
-    result_details: Optional[str] = None
+    patient_id: Optional[int] = None
 
 class AnalysisCreate(AnalysisBase):
-    patient_id: Optional[int] = None
     image_path: str
-    ai_prediction: str
-    ai_accuracy: float
+    prediction: Optional[PredictionResponse] = None
 
-# Schema para actualizaciones generales (no médicas)
 class AnalysisUpdate(BaseModel):
-    result_details: Optional[str] = None
+    patient_id: Optional[int] = None
 
 class AnalysisDoctorUpdate(BaseModel):
     doctor_diagnosis: str
@@ -25,22 +23,18 @@ class AnalysisDoctorUpdate(BaseModel):
 class AnalysisResponse(AnalysisBase):
     id: int
     image_path: str
-    ai_prediction: str
-    ai_accuracy: float
-    created_at: datetime
     
     is_verified: bool
     doctor_diagnosis: Optional[str] = None
     verified_at: Optional[datetime] = None
     
-    # IDs explícitos (útiles para referencia rápida en frontend)
-    patient_id: Optional[int] = None
     uploader_id: int
     validator_id: Optional[int] = None
 
     patient: Optional[PatientResponse] = None
     uploader: Optional[UserResponse] = None
     validator: Optional[UserResponse] = None
-
+    prediction: Optional[PredictionResponse] = None
+    
     class Config:
         from_attributes = True

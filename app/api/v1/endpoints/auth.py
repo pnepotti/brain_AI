@@ -1,16 +1,10 @@
-# app/api/v1/endpoints/auth.py (actualizado)
-from fastapi import APIRouter, status, Depends, HTTPException
+# app/api/v1/endpoints/auth.py
+from fastapi import APIRouter, status, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.api.deps import get_db, get_current_user
+from app.core.deps import get_db, get_current_user
 from app.services.auth_service import auth_service
 from app.schemas.auth import LoginRequest, TokenResponse
 from app.models.user import User
-from app.core.exceptions import (
-    InvalidCredentialsError,
-    InactiveUserError,
-    UserNotFoundError,
-    AppException
-)
 
 router = APIRouter()
 
@@ -20,41 +14,16 @@ async def login(
     credentials: LoginRequest,
     db: AsyncSession = Depends(get_db)
 ):
-    """
-    Endpoint para login.
-    
-    Returns:
-        - 200: Token JWT generado exitosamente
-        - 401: Credenciales inválidas o usuario inactivo
-        - 404: Usuario no encontrado
-    """
-    try:
-        token = await auth_service.login(
-            db=db,
-            email=credentials.email,
-            password=credentials.password
-        )
-        return token
-    except AppException as e:
-        raise HTTPException(status_code=e.status_code, detail=e.message)
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Error durante login"
-        )
+    token = await auth_service.login(
+        db=db,
+        login_in=credentials,
+    )
+    return token
 
 
 @router.post("/logout", status_code=status.HTTP_200_OK)
 async def logout(current_user: User = Depends(get_current_user)):
-    """
-    Endpoint para logout.
     
-    En JWT stateless, el cliente elimina el token localmente.
-    El backend solo confirma el logout.
-    
-    Args:
-        current_user: Usuario actual extraído del JWT
-    """
     result = await auth_service.logout(user_id=current_user.id)
     return result
 
@@ -64,16 +33,8 @@ async def refresh_token(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user)  
 ):
-    """
-    Endpoint para refrescar el JWT token.
-    
-    Requiere autenticación previa (token válido).
-    """
-    try:
-        token = await auth_service.refresh_token(
-            db=db,
-            user_id=current_user.id
-        )
-        return token
-    except AppException as e:
-        raise HTTPException(status_code=e.status_code, detail=e.message)
+    token = await auth_service.refresh_token(
+        db=db,
+        user_id=current_user.id
+    )
+    return token
