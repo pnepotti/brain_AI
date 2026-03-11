@@ -1,16 +1,21 @@
+import logging
+
+logger = logging.getLogger(__name__)
 
 class PredictionService:
     def __init__(self):
+        """Inicializa el servicio de predicción."""
+        
+        pass
+
+    def _preprocess_image(self, image_path: str, target_size=(224, 224)):
+        """Carga y preprocesa la imagen para el modelo."""
+        
         pass
 
     async def predict(self, image_path: str) -> dict:
-        # Aquí iría la lógica para cargar el modelo de IA y hacer la predicción
-        # Por ejemplo, podrías usar TensorFlow, PyTorch, etc.
-        # Para este ejemplo, devolveremos una predicción simulada
-        return {
-            "prediction": "tumor_benigno",
-            "accuracy": 0.95,
-            "details": "El modelo predice que el tumor es benigno con una precisión del 95%."
-        }
+        """Realiza la predicción sobre una imagen preprocesada."""
+        
+        pass
     
 prediction_service = PredictionService()

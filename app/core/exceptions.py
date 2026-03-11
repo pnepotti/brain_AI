@@ -18,6 +18,7 @@ class ErrorCode(str, Enum):
     MISSING_PATIENT = "MISSING_PATIENT"
     ANALYSIS_NOT_FOUND = "ANALYSIS_NOT_FOUND"
     # Pacientes
+    MODEL_NOT_LOADED = "MODEL_NOT_LOADED"
     PATIENT_NOT_FOUND = "PATIENT_NOT_FOUND"
     # General
     UNAUTHORIZED = "UNAUTHORIZED"
@@ -40,6 +41,7 @@ class ErrorMessages:
     MISSING_PATIENT = "ID de paciente es requerido"
     ANALYSIS_NOT_FOUND = "Análisis no encontrado"
     # Pacientes
+    MODEL_NOT_LOADED = "El modelo de IA no se ha cargado correctamente"
     PATIENT_NOT_FOUND = "Paciente no encontrado"
     
     # General
@@ -115,6 +117,14 @@ class MissingPatientError(AppException):
 class AnalysisNotFoundError(AppException):
     def __init__(self, message: str = ErrorMessages.ANALYSIS_NOT_FOUND):
         super().__init__(message, status.HTTP_404_NOT_FOUND, ErrorCode.ANALYSIS_NOT_FOUND)
+
+
+# ============================================
+# EXCEPCIONES DE MODELO
+# ============================================
+class ModelNotLoadedError(AppException):
+    def __init__(self, message: str = ErrorMessages.MODEL_NOT_LOADED):
+        super().__init__(message, status.HTTP_503_SERVICE_UNAVAILABLE, ErrorCode.MODEL_NOT_LOADED)
 
 # ============================================
 # EXCEPCIONES DE PACIENTES

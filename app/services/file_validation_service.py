@@ -19,9 +19,9 @@ class FileValidationService:
             logger.warning(f"Intento de subir archivo no-imagen: {file.content_type}")
             raise InvalidImageError(f"Formato no válido. Se requiere imagen. Recibido: {file.content_type}")
         
-        # VALIDACION DE IMAGEN MRI
-        # Aquí iría la lógica específica para validar imágenes MRI
-        
+        # Aquí se podrían añadir otras validaciones genéricas, como el tamaño máximo del archivo.
+        # La validación de contenido específico de la imagen (ej: si es realmente una MRI)
+        # debería pertenecer al servicio de predicción si requiere un modelo para ello.
         return True
 
 # Instancia Singleton para usar en otros servicios (Inyección de Dependencias)

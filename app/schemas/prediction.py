@@ -4,7 +4,9 @@ from datetime import datetime
 
 class PredictionBase(BaseModel):
     result: str
-    accuracy: float
+    probability: float
+    entropy: float
+    confidence: float
 
 class PredictionCreate(PredictionBase):
     created_at: Optional[datetime] = None
